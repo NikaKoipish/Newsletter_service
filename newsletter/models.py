@@ -4,6 +4,7 @@ NULLABLE = {'null': True, 'blank': True}
 
 
 class Client(models.Model):
+    """ Клиент """
     first_name = models.CharField(max_length=20, verbose_name='Имя')
     last_name = models.CharField(max_length=20, verbose_name='Фамилия')
     patronymic = models.CharField(max_length=20, verbose_name='Отчество', **NULLABLE)
@@ -19,6 +20,7 @@ class Client(models.Model):
 
 
 class Message(models.Model):
+    """ Сообщение """
     message_title = models.CharField(max_length=100, verbose_name='Тема письма')
     message_content = models.TextField(verbose_name='Содержание')
 
@@ -26,11 +28,13 @@ class Message(models.Model):
         return f'{self.message_title}'
 
     class Meta:
-        verbose_name = 'Письмо'
-        verbose_name_plural = 'Письма'
+        verbose_name = 'Сообщение для рассылки'
+        verbose_name_plural = 'Сообщения для рассылки'
 
 
 class Mail(models.Model):
+    """ Рассылка """
+    title = models.CharField(max_length=100, verbose_name='Тема рассылки')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
     client = models.ForeignKey(Client, on_delete=models.DO_NOTHING, verbose_name='Клиент')
     mail_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Первая отправка рассылки')
@@ -40,5 +44,5 @@ class Mail(models.Model):
         return f'{self.mail_status}'
 
     class Meta:
-        verbose_name = 'Письмо'
-        verbose_name_plural = 'Письма'
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
