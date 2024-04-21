@@ -3,7 +3,7 @@ from newsletter.models import Mail, Message, Client
 
 @admin.register(Mail)
 class MailAdmin(admin.ModelAdmin):
-    list_display = ('title', 'message', 'mail_periodicity', 'mail_status', 'client')
+    list_display = ('title', 'message', 'mail_periodicity', 'mail_status')
     list_filter = ('mail_status', 'mail_periodicity')
     search_fields = ('title',)
 
