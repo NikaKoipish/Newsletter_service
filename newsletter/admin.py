@@ -1,5 +1,6 @@
 from django.contrib import admin
-from newsletter.models import Mail, Message, Client
+from newsletter.models import Message, Client, Mail
+
 
 @admin.register(Mail)
 class MailAdmin(admin.ModelAdmin):
