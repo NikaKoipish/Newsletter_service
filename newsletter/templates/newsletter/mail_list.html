@@ -2,8 +2,31 @@
 {% block content %}
 <body>
 <h1>Список рассылок</h1>
-{% for object in object.list %}
-<h1>Рассылка {{object.title}}</h1>
+<table class="table" cellpadding="10" border="1" width="100%">
+    <col width="60%">
+    <col width="20%">
+    <col width="20%">
+    <thead>
+    <tr>
+        <th scope="col">Название</th>
+        <th scope="col">Периодичность</th>
+        <th scope="col">Статус</th>
+    </tr>
+    </thead>
+</table>
+{% for object in object_list %}
+<table class="table" cellpadding="10" border="1" width="100%">
+    <col width="60%">
+    <col width="20%">
+    <col width="20%">
+    <tbody>
+    <tr>
+        <td>{{object.title}}</td>
+        <td>{{object.mail_periodicity}}</td>
+        <td>{{object.mail_status}}</td>
+    </tr>
+    </tbody>
+</table>
 {% endfor %}
 </body>
 {% endblock %}
