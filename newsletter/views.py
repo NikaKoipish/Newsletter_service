@@ -6,7 +6,7 @@ from newsletter.models import Mail, Client, Message
 
 
 class HomePageView(TemplateView):
-    template_name = 'newsletter/base.html'
+    template_name = 'newsletter/home.html'
 
 
 class MailListView(ListView):
