@@ -1,0 +1,22 @@
+{% extends 'newsletter/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="row text-center">
+    {% for object in object_list %}
+    <div class="col-3">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h3 class="my-0 font-weight-normal">{{ object.title }}</h3>
+            </div>
+            <div class="card-body">
+                <img src="{{ object.preview|mymedia }}" height="111" class="img-thumbnail">
+                <span class="textarea">{{ object.content|slice:100 }}</span>
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                </ul>
+                <a href="{% url 'article:article_detail' object.slug %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Читать</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

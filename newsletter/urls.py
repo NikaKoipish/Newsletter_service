@@ -4,6 +4,7 @@ from newsletter.views import MailListView, MailDetailView, MailCreateView, MailU
     HomePageView
 from newsletter.apps import NewsletterConfig
 app_name = NewsletterConfig.name
+
 urlpatterns = [
     path('', HomePageView.as_view(), name='homepage'),
 
@@ -24,4 +25,5 @@ urlpatterns = [
     path('message/create/', MessageListView.as_view(), name="message_create"),
     path('message/update/<int:pk>/', MessageListView.as_view(), name='message_update'),
     path('message/delete/<int:pk>/', MessageListView.as_view(), name='message_delete'),
+
 ]
