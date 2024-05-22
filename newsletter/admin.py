@@ -1,5 +1,5 @@
 from django.contrib import admin
-from newsletter.models import Message, Client, Mail
+from newsletter.models import Message, Client, Mail, LogAttempt
 
 
 @admin.register(Mail)
@@ -19,3 +19,9 @@ class MessageAdmin(admin.ModelAdmin):
 class ClientAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'patronymic', 'email', 'comment')
     search_fields = ('last_name',)
+
+
+@admin.register(LogAttempt)
+class LogAttemptAdmin(admin.ModelAdmin):
+    list_display = ('attempt_datetime', 'attempt_status', 'server_response')
+    list_filter = ('attempt_status',)

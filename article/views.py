@@ -20,11 +20,11 @@ class ArticleUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('article:article_detail', args=[self.kwargs.get('pk')])
 
-    def get_form_class(self):
-        user = self.request.user
-        if user.has_perm("article.change_article"):
-            return ArticleManagerForm
-        raise PermissionDenied
+    # def get_form_class(self):
+    #     user = self.request.user
+    #     if user.has_perm("article.change_article"):
+    #         return ArticleManagerForm
+    #     raise PermissionDenied
 
 
 class ArticleDeleteView(DeleteView):
