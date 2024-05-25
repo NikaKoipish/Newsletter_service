@@ -1,18 +1,25 @@
 {% extends 'newsletter/base.html' %}
 {% block content %}
 <main class="px-3">
-        <h1>Добро пожаловать</h1>
-        <h1>в сервис рассылок!</h1>
-        <p class="lead">Здесь вы можете создать и настроить отправку рассылок для информирования и привлечения
-            клиентов.</p>
-        <p class="lead">
-            <a href="#" class="btn btn-lg btn-light fw-bold border-white bg-white">Создать рассылку</a>
-        </p>
-    <div class="row text-left">
-         <div class="col-6">
-<li>Количество рассылок на сайте {{ mail.objects.count }}</li>
-         </div>
-
+    <h1>Добро пожаловать</h1>
+    <h1>в сервис рассылок!</h1>
+    <p class="lead">Здесь вы можете создать и настроить отправку рассылок для информирования и привлечения
+        клиентов.</p>
+    <p class="lead">
+        <a href="{% url 'newsletter:mail_create' %}" class="btn btn-lg btn-light fw-bold border-white bg-white">Создать
+            рассылку</a>
+    </p>
+    <div class="row">
+        <div class="col-6">
+            <p>Количество рассылок на сайте - {{count}} </p>
+        </div>
+        <div class="col-6">
+            <p>Количество активных рассылок - {{is_active}} </p>
+        </div>
+        <div class="row">
+        <div class="col-12">
+            <p>Количество клиентов - {{unique}} </p>
+        </div>
     </div>
 </main>
 {% endblock %}

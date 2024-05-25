@@ -4,7 +4,7 @@ from newsletter.models import Message, Client, Mail, LogAttempt
 
 @admin.register(Mail)
 class MailAdmin(admin.ModelAdmin):
-    list_display = ('title', 'message', 'mail_periodicity', 'mail_status')
+    list_display = ('id', 'title', 'message', 'mail_periodicity', 'mail_status', 'mail_datetime','mail_datetime_last','mail_active')
     list_filter = ('mail_status', 'mail_periodicity')
     search_fields = ('title',)
 
@@ -17,7 +17,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'patronymic', 'email', 'comment')
+    list_display = ('id', 'first_name', 'last_name', 'patronymic', 'email', 'comment')
     search_fields = ('last_name',)
 
 

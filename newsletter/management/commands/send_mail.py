@@ -16,7 +16,7 @@ class Command(BaseCommand):
         zone = pytz.timezone(settings.TIME_ZONE)
         current_datetime = datetime.now(zone)
         # создание объекта с применением фильтра
-        mailings = Mail.objects.filter(mail_datetime__lte=current_datetime).filter(mail_status__in=[список_статусов])
+        mailings = Mail.objects.filter(mail_datetime__lte=current_datetime, mail_status__in=[Mail.StatusOfMail.CREATED])
 
         for mailing in mailings:
             try:
@@ -60,5 +60,5 @@ class Command(BaseCommand):
     """Функция старта периодических задач"""
     def start(self):
         scheduler = BackgroundScheduler()
-        scheduler.add_job(self.send_mailing, 'interval', seconds=10)
+        scheduler.add_job(self.send_mailing, 'interval', seconds=60)
         scheduler.start()

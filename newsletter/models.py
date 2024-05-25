@@ -48,9 +48,12 @@ class Mail(models.Model):
     title = models.CharField(max_length=100, verbose_name='Тема рассылки')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
     client = models.ManyToManyField(Client, verbose_name='Клиент')
-    mail_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Первая отправка рассылки')
+    mail_datetime = models.DateTimeField(verbose_name='Начало отправки рассылки')
+    mail_datetime_last = models.DateTimeField(verbose_name='Последняя дата отправки рассылки', **NULLABLE)
     mail_periodicity = models.CharField(verbose_name='Периодичность', choices=PeriodicityOfMail)
     mail_status = models.CharField(verbose_name='Статус отправки', choices=StatusOfMail, default=StatusOfMail.CREATED)
+    mail_active = models.BooleanField(verbose_name='Активность рассылки', default=True)
+
     def __str__(self):
         return f'{self.mail_status}'
 
