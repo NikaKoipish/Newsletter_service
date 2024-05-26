@@ -72,6 +72,7 @@ class ClientUpdateView(UpdateView):
     """Редактирование данных клиента"""
     model = Client
     fields = '__all__'
+    success_url = reverse_lazy('newsletter:client_list')
 
 
 class ClientDeleteView(DeleteView):
@@ -83,25 +84,25 @@ class ClientDeleteView(DeleteView):
 class MessageListView(ListView):
     """ Просмотр списка сообщений """
     model = Message
-    template_name = 'newsletter/message_list.html'
 
 
 class MessageDetailView(DetailView):
     """Просмотр деталей сообщения"""
     model = Message
-    template_name = 'newsletter/message_detail.html'
 
 
 class MessageCreateView(CreateView):
     """Создание сообщения"""
     model = Message
     fields = '__all__'
+    success_url = reverse_lazy('newsletter:message_list')
 
 
 class MessageUpdateView(UpdateView):
     """Редактирование сообщения"""
     model = Message
     fields = '__all__'
+    success_url = reverse_lazy('newsletter:message_list')
 
 
 class MessageDeleteView(DeleteView):

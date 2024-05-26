@@ -24,7 +24,7 @@
     <col width="20%">
     <tbody>
     <tr>
-        <td>{{object.title}}</td>
+        <td><a href="{% url 'newsletter:client_detail' object.pk %}">{{object.title}}</a></td>
         <td>{{object.mail_periodicity}}</td>
         <td>{{object.mail_status}}</td>
     </tr>
