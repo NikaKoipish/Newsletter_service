@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'newsletter',
     'django_apscheduler',
-    'article'
+    'article',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL = 'users.User'
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 APSCHEDULER_RUN_NOW_TIMEOUT = 25

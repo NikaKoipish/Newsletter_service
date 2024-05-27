@@ -9,16 +9,12 @@
         <a href="{% url 'newsletter:mail_create' %}" class="btn btn-lg btn-light fw-bold border-white bg-white">Создать
             рассылку</a>
     </p>
+    <br>
     <div class="row">
-        <div class="col-6">
-            <p>Количество рассылок на сайте - {{count}} </p>
-        </div>
-        <div class="col-6">
-            <p>Количество активных рассылок - {{is_active}} </p>
-        </div>
-        <div class="row">
-        <div class="col-12">
-            <p>Количество клиентов - {{unique}} </p>
+        <div class="col-6 text-sm-start">
+            <li>Количество рассылок на сайте - {{count}} </li>
+            <li>Количество активных рассылок - {{is_active}} </li>
+            <li>Количество клиентов - {{unique}} </li>
         </div>
     </div>
 </main>
