@@ -12,7 +12,7 @@ class HomePageView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         count = Mail.objects.count()
         is_active = Mail.objects.filter(mail_active=True).count()
-        unique = Client.objects.distinct().count()
+        unique = Client.objects.distinct('email').count()
         context_data = {
             'count': count,
             'is_active': is_active,
