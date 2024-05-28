@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+
+from users.models import User
 
 NULLABLE = {'null': True, 'blank': True}
 
@@ -11,6 +12,8 @@ class Client(models.Model):
     patronymic = models.CharField(max_length=20, verbose_name='Отчество', **NULLABLE)
     email = models.EmailField(verbose_name='Электронный адрес')
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.first_name}{self.last_name} ({self.email})'
@@ -25,6 +28,8 @@ class Message(models.Model):
     message_title = models.CharField(max_length=100, verbose_name='Тема письма')
     message_content = models.TextField(verbose_name='Содержание')
 
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
+
     def __str__(self):
         return f'{self.message_title}'
 
@@ -35,15 +40,17 @@ class Message(models.Model):
 
 class Mail(models.Model):
     """ Рассылка """
-    class PeriodicityOfMail(models.TextChoices):
-        PER_A_DAY = "Раз в день", _("Раз в день")
-        PER_A_WEEK = "Раз в неделю", _("Раз в неделю")
-        PER_A_MONTH = "Раз в месяц", _("Раз в месяц")
+    PeriodicityOfMail = [
+        ("Раз в день", "Раз в день"),
+        ("Раз в неделю", "Раз в неделю"),
+        ("Раз в месяц", "Раз в месяц"),
+    ]
 
-    class StatusOfMail(models.TextChoices):
-        CREATED = "Создана", _("Создана")
-        LAUNCHED = "Запущена", _("Запущена")
-        FINISHED = "Завершена", _("Завершена")
+    StatusOfMail = [
+        ("Создана", "Создана"),
+        ("Запущена", "Запущена"),
+        ("Завершена", "Завершена"),
+    ]
 
     title = models.CharField(max_length=100, verbose_name='Тема рассылки')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
@@ -51,8 +58,10 @@ class Mail(models.Model):
     mail_datetime = models.DateTimeField(verbose_name='Начало отправки рассылки')
     mail_datetime_last = models.DateTimeField(verbose_name='Последняя дата отправки рассылки', **NULLABLE)
     mail_periodicity = models.CharField(verbose_name='Периодичность', choices=PeriodicityOfMail)
-    mail_status = models.CharField(verbose_name='Статус отправки', choices=StatusOfMail, default=StatusOfMail.CREATED)
+    mail_status = models.CharField(verbose_name='Статус отправки', choices=StatusOfMail, default=StatusOfMail[0][0])
     mail_active = models.BooleanField(verbose_name='Активность рассылки', default=True)
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     def __str__(self):
         return f'{self.mail_status}'
@@ -60,6 +69,12 @@ class Mail(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+        permissions = [
+            (
+                "set_activation_mail",
+                "Can deactivate a mail"
+            )
+        ]
 
 
 class LogAttempt(models.Model):

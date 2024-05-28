@@ -22,7 +22,7 @@
     <tbody>
     <tr>
         <td><a href="{% url 'newsletter:message_detail' object.pk %}">{{object.message_title}}</a></td>
-        <td>{{object.message_content}}</td>
+        <td>{{object.message_content|slice:100}}</td>
     </tr>
     </tbody>
 </table>
