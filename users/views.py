@@ -1,13 +1,14 @@
 import secrets
 
 from django.contrib.auth.views import PasswordResetView
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 
-from users.forms import UserRegisterForm, UserPasswordResetForm, UserProfileForm
+from users.forms import UserRegisterForm, UserPasswordResetForm, UserProfileForm, UserManagerProfileForm
 from users.models import User
 from config.settings import DEFAULT_FROM_EMAIL
 from service import generate_password
@@ -82,4 +83,9 @@ class ProfileView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UsersListView(ListView):
+    """ Просмотр списка рассылок """
+    model = User
 

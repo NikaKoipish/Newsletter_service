@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -29,12 +29,12 @@ class MailListView(ListView):
     model = Mail
 
 
-class MailDetailView(DetailView):
+class MailDetailView(LoginRequiredMixin, DetailView):
     """ Просмотр деталей рассылки """
     model = Mail
 
 
-class MailCreateView(CreateView, LoginRequiredMixin):
+class MailCreateView(LoginRequiredMixin, CreateView):
     """ Создание рассылки """
     model = Mail
     form_class = MailForm
@@ -58,33 +58,28 @@ class MailUpdateView(LoginRequiredMixin, UpdateView):
         user = self.request.user
         if user == self.object.owner:
             return MailForm
-        if (
-                user.has_perm("mail.set_activation_mail")
-                and user.has_perm("user.change_user")
-                and user.has_perm("user.view_user")
-                and user.has_perm("mail.view_mail")
-        ):
+        if user.has_perm('mail.set_activation_mail'):
             return MailManagerForm
         raise PermissionDenied
 
 
-class MailDeleteView(DeleteView, LoginRequiredMixin):
+class MailDeleteView(LoginRequiredMixin, DeleteView):
     """ Удаление рассылки """
     model = Mail
     success_url = reverse_lazy('newsletter:mail_list')
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     """ Просмотр списка клиентов """
     model = Client
 
 
-class ClientDetailView(DetailView):
+class ClientDetailView(LoginRequiredMixin, DetailView):
     """Просмотр одного клиента"""
     model = Client
 
 
-class ClientCreateView(CreateView, LoginRequiredMixin):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     """Создание клиента"""
     model = Client
     form_class = ClientForm
@@ -98,14 +93,14 @@ class ClientCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ClientUpdateView(UpdateView, LoginRequiredMixin):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирование данных клиента"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('newsletter:client_list')
 
 
-class ClientDeleteView(DeleteView, LoginRequiredMixin):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление клиента"""
     model = Client
     success_url = reverse_lazy('newsletter:client_list')
@@ -116,12 +111,12 @@ class MessageListView(ListView):
     model = Message
 
 
-class MessageDetailView(DetailView):
+class MessageDetailView(LoginRequiredMixin, DetailView):
     """Просмотр деталей сообщения"""
     model = Message
 
 
-class MessageCreateView(CreateView, LoginRequiredMixin):
+class MessageCreateView(LoginRequiredMixin, CreateView):
     """Создание сообщения"""
     model = Message
     form_class = MessageForm
@@ -135,14 +130,20 @@ class MessageCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class MessageUpdateView(UpdateView, LoginRequiredMixin):
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
     """Редактирование сообщения"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('newsletter:message_list')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return MessageForm
+        raise PermissionDenied
 
-class MessageDeleteView(DeleteView, LoginRequiredMixin):
+
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление сообщения"""
     model = Message
     success_url = reverse_lazy('newsletter:message_list')
