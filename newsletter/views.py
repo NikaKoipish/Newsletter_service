@@ -1,9 +1,11 @@
+import random
+
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
 
+from article.models import Article
 from newsletter.forms import MailForm, ClientForm, MessageForm, MailManagerForm
 from newsletter.models import Mail, Client, Message
 
@@ -12,14 +14,17 @@ class HomePageView(TemplateView):
     template_name = 'newsletter/home.html'
 
     def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
         count = Mail.objects.count()
         is_active = Mail.objects.filter(mail_active=True).count()
         unique = Client.objects.distinct('email').count()
+        article_list = list(Article.objects.all())
+        random.shuffle(article_list)
+        random_article_list = article_list[:3]
         context_data = {
             'count': count,
             'is_active': is_active,
             'unique': unique,
+            'random_article_list': random_article_list,
         }
         return context_data
 
@@ -68,6 +73,16 @@ class MailDeleteView(LoginRequiredMixin, DeleteView):
     model = Mail
     success_url = reverse_lazy('newsletter:mail_list')
 
+    def get_context_data(self, **kwargs):
+        """
+        Права доступа владельца.
+        """
+        context_data = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user == self.object.owner:
+            return context_data
+        raise PermissionDenied
+
 
 class ClientListView(LoginRequiredMixin, ListView):
     """ Просмотр списка клиентов """
@@ -99,11 +114,27 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ClientForm
     success_url = reverse_lazy('newsletter:client_list')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ClientForm
+        raise PermissionDenied
+
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление клиента"""
     model = Client
     success_url = reverse_lazy('newsletter:client_list')
+
+    def get_context_data(self, **kwargs):
+        """
+        Права доступа владельца.
+        """
+        context_data = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user == self.object.owner:
+            return context_data
+        raise PermissionDenied
 
 
 class MessageListView(ListView):
@@ -147,3 +178,13 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
     """Удаление сообщения"""
     model = Message
     success_url = reverse_lazy('newsletter:message_list')
+
+    def get_context_data(self, **kwargs):
+        """
+        Права доступа владельца.
+        """
+        context_data = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user == self.object.owner:
+            return context_data
+        raise PermissionDenied

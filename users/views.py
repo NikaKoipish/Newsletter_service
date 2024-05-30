@@ -1,5 +1,6 @@
 import secrets
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.views import PasswordResetView
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
@@ -85,7 +86,10 @@ class ProfileView(UpdateView):
         return self.request.user
 
 
-class UsersListView(ListView):
+class UsersListView(PermissionRequiredMixin, ListView):
     """ Просмотр списка рассылок """
     model = User
+    permission_required = "view_all_users"
+
+
 

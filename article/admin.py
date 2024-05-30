@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from article.models import Article
+
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'content', 'created_at',)
+    search_fields = ('title',)

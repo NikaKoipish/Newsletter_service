@@ -25,6 +25,10 @@ class User(AbstractUser):
             (
                 "block_the_user",
                 "Can block the user"
+            ),
+            (
+                "view_all_users",
+                "Can view all users"
             )
         ]
 

@@ -16,5 +16,15 @@
             <li>Количество клиентов - {{unique}} </li>
         </div>
     </div>
+
+    <div class="row mt-4">
+        <div class="col-12 text-sm-start">
+            <h5>Зайдите в наш блог, это только часть статей</h5>
+            {% for article in random_article_list %}
+            <li>{{article.title}}</li>
+    {% endfor %}
+        </div>
+    </div>
+
 </main>
 {% endblock %}
