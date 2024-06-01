@@ -33,6 +33,10 @@ class MailListView(ListView):
     """ Просмотр списка рассылок """
     model = Mail
 
+    def get_queryset(self):
+        user = self.request.user
+        return Mail.objects.filter(owner=user)
+
 
 class MailDetailView(LoginRequiredMixin, DetailView):
     """ Просмотр деталей рассылки """
@@ -87,6 +91,9 @@ class MailDeleteView(LoginRequiredMixin, DeleteView):
 class ClientListView(LoginRequiredMixin, ListView):
     """ Просмотр списка клиентов """
     model = Client
+    def get_queryset(self):
+        user = self.request.user
+        return Client.objects.filter(owner=user)
 
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
@@ -140,6 +147,10 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 class MessageListView(ListView):
     """ Просмотр списка сообщений """
     model = Message
+
+    def get_queryset(self):
+        user = self.request.user
+        return Message.objects.filter(owner=user)
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
