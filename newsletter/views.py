@@ -35,6 +35,8 @@ class MailListView(ListView):
 
     def get_queryset(self):
         user = self.request.user
+        if user.has_perm('newsletter.view_mail'):
+            return Mail.objects.all()
         return Mail.objects.filter(owner=user)
 
 
@@ -67,7 +69,7 @@ class MailUpdateView(LoginRequiredMixin, UpdateView):
         user = self.request.user
         if user == self.object.owner:
             return MailForm
-        if user.has_perm('mail.set_activation_mail'):
+        if user.has_perm('newsletter.set_activation_mail'):
             return MailManagerForm
         raise PermissionDenied
 

@@ -23,6 +23,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     {% if user.is_authenticated %}
+                    <li><a class="dropdown-item" href="{% url 'users:profile' %}">Профиль</a></li>
                     <li><a class="dropdown-item" href="{% url 'users:logout' %}">Выход</a></li>
                     {% else %}
                     <li><a class="dropdown-item" href="{% url 'users:login' %}">Вход</a></li>

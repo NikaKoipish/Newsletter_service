@@ -27,7 +27,7 @@ class UserPasswordResetForm(StyleFormMixin, PasswordResetForm):
 class UserProfileForm(StyleFormMixin, UserChangeForm):
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('name','email',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

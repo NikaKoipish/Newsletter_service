@@ -1,6 +1,6 @@
 import secrets
 
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
@@ -76,20 +76,26 @@ class UserPasswordResetView(PasswordResetView):
         return super().form_valid(form)
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     template_name = 'users/user_edit_form.html'
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy('newsletter:homepage')
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_form_class(self):
+        user = self.request.user
+        if user.has_perm('users.block_the_user'):
+            return UserManagerProfileForm
+        return UserProfileForm
 
 
 class UsersListView(PermissionRequiredMixin, ListView):
     """ Просмотр списка рассылок """
     model = User
-    permission_required = "view_all_users"
+    permission_required = "users.view_all_users"
 
 
 

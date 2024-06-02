@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
 
@@ -12,23 +13,19 @@ class ArticleCreateView(CreateView):
     success_url = reverse_lazy('article:articles')
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(PermissionRequiredMixin,UpdateView):
     model = Article
     form_class = ArticleManagerForm
+    permission_required = 'article.change_article'
     success_url = reverse_lazy('article:articles')
 
     def get_success_url(self):
         return reverse('article:article_detail', args=[self.kwargs.get('pk')])
 
-    # def get_form_class(self):
-    #     user = self.request.user
-    #     if user.has_perm("article.change_article"):
-    #         return ArticleManagerForm
-    #     raise PermissionDenied
 
-
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
     model = Article
+    permission_required = 'article.delete_article'
     success_url = reverse_lazy('article:articles')
 
 

@@ -12,9 +12,13 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>{{ article.content }}</li>
                     </ul>
-
+                    {% if perms.article.change_article%}
                     <a href="{% url 'article:update_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+                    {% endif %}
+                    {% if perms.article.delete_article%}
                     <a href="{% url 'article:delete_article' object.pk %}" type="button" class="btn btn-lg btn-block btn-danger">Удалить</a>
+                    {% endif %}
+                    <a href="{% url 'article:articles' %}" type="button" class="btn btn-lg btn-block btn-outline-success">Назад к списку статей</a>
 
                 </div>
             </div>
