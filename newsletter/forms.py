@@ -25,6 +25,3 @@ class MailManagerForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mail
         fields = ('mail_active',)
-
-
-

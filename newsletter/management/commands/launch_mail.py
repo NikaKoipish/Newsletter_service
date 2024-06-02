@@ -42,13 +42,13 @@ class Command(BaseCommand):
                     )
                     mailing.mail_status = "Запущена"
                     mailing.save()
-                    if mailing.mail_periodicity == "Раз в день" and (current_datetime -  mailing.mail_datetime_last).days >= 1:
+                    if mailing.mail_periodicity == "Раз в день" and (current_datetime - mailing.mail_datetime_last).days >= 1:
                         mailing.mail_datetime = F("mail_datetime") + timedelta(days=1)
                         mailing.save()
-                    elif mailing.mail_periodicity == "Раз в неделю" and (current_datetime -  mailing.mail_datetime_last).days >= 7:
+                    elif mailing.mail_periodicity == "Раз в неделю" and (current_datetime - mailing.mail_datetime_last).days >= 7:
                         mailing.mail_datetime = F("mail_datetime") + timedelta(days=7)
                         mailing.save()
-                    elif mailing.mail_periodicity == "Раз в месяц" and (current_datetime -  mailing.mail_datetime_last).days >= 30:
+                    elif mailing.mail_periodicity == "Раз в месяц" and (current_datetime - mailing.mail_datetime_last).days >= 30:
                         mailing.mail_datetime = F("mail_datetime") + timedelta(days=30)
                         mailing.save()
                     attempt = LogAttempt.objects.create(

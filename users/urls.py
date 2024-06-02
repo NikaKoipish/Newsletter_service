@@ -1,10 +1,9 @@
 from django.contrib.auth.views import LoginView, LogoutView
-
+from django.urls import path
+from users.views import UserCreateView, email_verification, UserPasswordResetView, ProfileView, UsersListView
 from users.apps import UsersConfig
 app_name = UsersConfig.name
 
-from django.urls import path
-from users.views import UserCreateView, email_verification, UserPasswordResetView, ProfileView, UsersListView
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
@@ -14,5 +13,4 @@ urlpatterns = [
     path('reset-password/', UserPasswordResetView.as_view(), name='reset_password'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('list/', UsersListView.as_view(), name='users'),
-
 ]
