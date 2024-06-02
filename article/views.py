@@ -1,7 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
-
+from article.services import get_articles_from_cache
 from article.forms import ArticleManagerForm
 from article.models import Article
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -32,6 +31,9 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
 class ArticleListView(ListView):
     model = Article
     template_name = 'article/articles_list.html'
+
+    def get_queryset(self):
+        return get_articles_from_cache()
 
 
 class ArticleDetailView(DetailView):
